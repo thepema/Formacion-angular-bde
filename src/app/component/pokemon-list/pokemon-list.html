@@ -1,0 +1,9 @@
+<h3> Pokemon List</h3>
+<ul>
+    @for (pokemon of listPokemons(); track $index) {
+            <li class="hover" (click)="navigateDetail(pokemon.name)" >{{ pokemon.name }}</li>
+        
+    }
+</ul>
+
+

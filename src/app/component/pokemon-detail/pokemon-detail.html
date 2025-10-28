@@ -1,0 +1,16 @@
+<h2>Detalle Pokemon</h2>
+<button (click)="volver()"> Volver </button>
+@if(pokemon()){
+    <h3> {{ pokemon().name}} </h3>
+    <ul>
+        @if(pokemon().sprites.front_default){
+        <img [src]="pokemon().sprites.front_default" [alt]="pokemon().name">
+        }
+        <li><strong>ID: </strong> {{ pokemon().id }} </li>
+        <li><strong>Tipo: </strong> {{ getTipo(pokemon().types) }} </li>
+        <li><strong>Peso:</strong> {{ pokemon().weight }} kg</li>
+        <li><strong>Altura:</strong> {{ pokemon().height }} m</li>
+    </ul>
+}@else {
+    <p> No se encontró información del Pokemon</p>
+}
