@@ -1,7 +1,14 @@
+@defer(when detailId() !== null) {
+    <app-pokemon-detail [pokemonName]="detailId()"></app-pokemon-detail> 
+}
 <h3> Pokemon List</h3>
 <ul>
     @for (pokemon of listPokemons(); track $index) {
-            <li class="hover" (click)="navigateDetail(pokemon.name)" >{{ pokemon.name }}</li>
+            <li class="hover" highlightDerective (click)="navigateDetail(pokemon.name, $index)" 
+            [ngClass]="{
+            'selected': itemSelected && itemSelected.nombre === pokemon.name
+             }" 
+            >{{ pokemon.name }}</li>
         
     }
 </ul>

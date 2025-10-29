@@ -1,0 +1,86 @@
+<form
+  style="display: flex; flex-direction: column; align-items: flex-start; gap: 16px"
+  [formGroup]="entrenadorForm"
+  (ngSubmit)="onSubmit()"
+>
+  <h2>Registrar Entrenador Pokémon</h2>
+
+  <!-- Nombre (input texto) -->
+<label for="nombre">Nombre:</label>
+  <input id="nombre" type="text" formControlName="nombre" required />
+  @if(entrenadorForm.get('nombre')?.invalid &&
+  entrenadorForm.get('nombre')?.touched){
+  <p class="error">El nombre es obligatorio.</p>
+  }
+
+  <!-- Apellido (input texto) -->
+  <div [formGroup]="tarjeta" style="border: 1px solid black; padding: 16px">
+    <legend>Tarjeta de Entrenador</legend>
+    <label for="identificador">Identificador</label>
+    <input
+      id="identificador"
+      type="text"
+      formControlName="numero"
+      maxlength="7"
+      placeholder="7"
+    />
+    @if(tarjeta.get('numero')?.touched && tarjeta.get('numero')?.invalid){
+    <p class="error">minimo 7 caracteres</p>
+    }
+    <label for="validez">Años de validez</label>
+    <input
+      id="validez"
+      type="number"
+      formControlName="validez"
+    />
+    @if(tarjeta.get('validez')?.touched && tarjeta.get('validez')?.invalid){
+    <p class="error"> Fuera de rango entre 1 y 5</p>
+    } @if(tarjeta.errors && tarjeta.errors['tarjetaIncompleta'] &&
+    tarjeta.get('numero')?.touched && tarjeta.get('validez')?.touched){
+    <p class="error">
+      Si pones número de tarjeta debes poner fecha de expiración y viceversa.
+    </p>
+    }
+  </div>
+
+  <!-- Edad (input number/slider) -->
+  <label for="edad">Edad:</label>
+  <input id="edad" type="range" min="10" max="99" formControlName="edad" />
+  <span>{{ entrenadorForm.get("edad")?.value }}</span>
+
+  <!-- Región (select dropdown) -->
+  <label for="region">Región:</label>
+  <select id="region" formControlName="region">
+    <option value="">Selecciona una región</option>
+    <option value="kanto">Kanto</option>
+    <option value="johto">Johto</option>
+    <option value="hoenn">Hoenn</option>
+    <option value="sinnoh">Sinnoh</option>
+    <option value="unova">Unova</option>
+    <option value="kalos">Kalos</option>
+    <option value="alola">Alola</option>
+    <option value="galar">Galar</option>
+  </select>
+
+  <!-- Género (radio) -->
+  <label>Género:</label>
+  <label>
+    <input type="radio" formControlName="genero" value="masculino" /> Masculino
+  </label>
+  <label>
+    <input type="radio" formControlName="genero" value="femenino" /> Femenino
+  </label>
+  <label>
+    <input type="radio" formControlName="genero" value="otro" /> Otro
+  </label>
+
+  <!-- ¿Tiene Pokédex? (checkbox) -->
+  <label>
+    <input type="checkbox" formControlName="pokedex" />
+    ¿Posee Pokédex?
+  </label>
+
+  <!-- Botón de enviar -->
+  <button type="submit" [disabled]="entrenadorForm.invalid">Registrar</button>
+</form>
+
