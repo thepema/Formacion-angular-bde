@@ -80,7 +80,8 @@
     ¿Posee Pokédex?
   </label>
 
-  <!-- Botón de enviar -->
-  <button type="submit" [disabled]="entrenadorForm.invalid">Registrar</button>
 </form>
+<!-- Botón de enviar -->
+<button (click)="volver()">Cancelar</button>
+<button [disabled]="entrenadorForm.invalid" (click)="onSubmit()">Registrar</button>
 

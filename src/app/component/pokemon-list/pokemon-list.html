@@ -1,6 +1,18 @@
 @defer(when detailId() !== null) {
     <app-pokemon-detail [pokemonName]="detailId()"></app-pokemon-detail> 
 }
+@if(entrenador()){
+    <app-entrenador-detail [entrenador]="entrenador()">
+        <ng-template #extras let-entrenador>
+            <div style="border: 3px solid grey; ">
+                <h4>Detalles Extra</h4>
+                <ul>
+                <li>Edad: {{ entrenador.edad }}</li>
+                </ul>
+            </div>
+        </ng-template>
+    </app-entrenador-detail>
+}
 <h3> Pokemon List</h3>
 <ul>
     @for (pokemon of listPokemons(); track $index) {
@@ -12,5 +24,7 @@
         
     }
 </ul>
+
+<button (click)="navigateForm()">Registrar Entrenador</button>
 
 

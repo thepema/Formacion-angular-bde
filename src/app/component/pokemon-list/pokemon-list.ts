@@ -1,13 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, HostListener, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { Router } from '@angular/router';
 import { PokemonService } from '../servicios/pokemon-service';
 import { PokemonDetail } from "../pokemon-detail/pokemon-detail";
 import { HighlightDirective } from '../servicios/highlight';
+import { EntrenadorDetail } from '../entrenador-detail/entrenador-detail';
+import { BehaviorSubject, combineLatest, fromEvent, interval, of, Subject, takeUntil } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-pokemon-list',
-  imports: [CommonModule, PokemonDetail, HighlightDirective],
+  imports: [CommonModule, PokemonDetail, HighlightDirective, EntrenadorDetail],
   templateUrl: './pokemon-list.html',
   styleUrl: './pokemon-list.scss',
   host: {
@@ -17,14 +20,25 @@ import { HighlightDirective } from '../servicios/highlight';
 export class PokemonList implements OnInit {
   private readonly router: Router = inject(Router);
   private readonly pokemonService: PokemonService = inject(PokemonService);
+  private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
   public detailId: WritableSignal<string | null> = signal<string | null>(null);
   public itemSelected: { nombre: string; index: number } | null = null
 
   public listPokemons = this.pokemonService.listPokemons;
+  public entrenador = this.pokemonService.entrador;
+
+ 
 
   constructor(){
-
+    const subject = new Subject();
+    const subjectb = new BehaviorSubject<number | null>(null);
+    const clicks = fromEvent(document, 'click');
+    subject.subscribe((value)=> console.log(value) );
+    clicks.subscribe(()=>{
+      subject.next(1)
+    });
+    
   }
 
   ngOnInit(): void {
@@ -35,12 +49,17 @@ export class PokemonList implements OnInit {
 
 
   public navigateDetail(name: string, $index: number){
+    this.pokemonService.setPokemonSelected(name);
     this.detailId.set(name);
     this.itemSelected = {nombre: name, index: $index};
   }
 
   public receptor($event: any){
     console.log($event);
+  }
+
+  public navigateForm(): void{
+    this.router.navigate(['/crear'])
   }
 
   flecha(event: KeyboardEvent){
